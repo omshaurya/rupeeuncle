@@ -1,0 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink-50 text-ink-900 font-sans antialiased dark:bg-surface-900 dark:text-ink-50;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  /* Visible keyboard focus everywhere — accessibility floor, never remove */
+  :focus-visible {
+    outline: 2px solid theme("colors.gold.400");
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Base card — now uses `surface` tokens in dark mode (not `ink-900`, which is the same
+     as the page background) so cards actually read as elevated rather than flat. */
+  .card-surface {
+    @apply bg-white dark:bg-surface-800 border border-ink-100 rounded-xl2 shadow-card dark:shadow-card-dark transition-shadow duration-300;
+  }
+  .dark .card-surface {
+    /* surface-500 (#274347) at 60% opacity — written as plain CSS to avoid the /
+       opacity-modifier syntax inside @apply, which postcss-selector-parser rejects. */
+    border-color: rgb(39 67 71 / 0.6);
+  }
+
+  .card-surface-hover {
+    @apply card-surface hover:shadow-card-hover dark:hover:shadow-card-dark-hover hover:-translate-y-0.5 transition-all duration-300 ease-out-back;
+  }
+
+  /* Glassmorphism — used on the homepage hero search bar, sticky nav-on-scroll, and
+     premium category cards. Needs an explicit background-color fallback because
+     backdrop-blur alone does nothing over a solid-color ancestor with no transparency.
+     Opacity values written as plain CSS (not Tailwind /modifier) for the same reason
+     as .card-surface above. */
+  .glass {
+    @apply backdrop-blur-md shadow-glass;
+    background-color: rgb(255 255 255 / 0.7);
+    border: 1px solid rgb(255 255 255 / 0.4);
+  }
+  .dark .glass {
+    background-color: rgb(15 28 31 / 0.6);   /* surface-800 */
+    border-color: rgb(39 67 71 / 0.4);        /* surface-500 */
+  }
+
+  .glass-strong {
+    @apply backdrop-blur-lg shadow-glass;
+    background-color: rgb(255 255 255 / 0.85);
+    border: 1px solid rgb(255 255 255 / 0.5);
+  }
+  .dark .glass-strong {
+    background-color: rgb(10 20 22 / 0.8);    /* surface-900 */
+    border-color: rgb(39 67 71 / 0.5);        /* surface-500 */
+  }
+
+  .result-figure {
+    @apply font-display font-semibold tabular-nums;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-ink-800 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-ink-700 hover:shadow-card-hover active:scale-[0.98] dark:bg-gold-400 dark:text-ink-950 dark:hover:bg-gold-300 dark:hover:shadow-glow-gold;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-ink-200 dark:border-surface-500 px-5 py-2.5 text-sm font-semibold text-ink-700 dark:text-ink-100 transition-all duration-200 hover:bg-ink-100 dark:hover:bg-surface-700 active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-ink-500 dark:text-ink-300 transition-colors hover:bg-ink-100 dark:hover:bg-surface-700 hover:text-ink-800 dark:hover:text-white;
+  }
+
+  /* Skeleton loader — shimmer animation for perceived-performance during data fetch.
+     NOTE: this previously mixed bg-ink-100/dark:bg-surface-700 (solid background-color)
+     with from-X/via-X/to-X gradient-stop utilities in a single @apply, which is invalid —
+     a flat bg-color and a gradient cannot both win on the same property. Fixed by using
+     ONLY the gradient utilities (bg-gradient-to-r + stops), which already supplies a
+     background, and moving the dark-mode variant to a separate, valid rule. */
+  .skeleton {
+    @apply rounded-md bg-gradient-to-r from-ink-100 via-ink-200 to-ink-100 animate-shimmer;
+    background-size: 1000px 100%;
+  }
+  .dark .skeleton {
+    @apply from-surface-700 via-surface-600 to-surface-700;
+  }
+
+  /* Category section cards on the homepage — gradient border + icon glow on hover */
+  .category-card {
+    @apply card-surface-hover relative overflow-hidden p-6;
+  }
+  .category-card::before {
+    content: "";
+    @apply absolute inset-0 bg-mesh-gold opacity-0 transition-opacity duration-500;
+  }
+  .category-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Article body typography for blog posts (rendered from stored HTML content) */
+  .prose-article h2 {
+    @apply mt-8 mb-3 font-display text-2xl font-semibold text-ink-900 dark:text-ink-50 scroll-mt-24;
+  }
+  .prose-article h3 {
+    @apply mt-6 mb-2 font-display text-xl font-semibold text-ink-900 dark:text-ink-50 scroll-mt-24;
+  }
+  .prose-article p {
+    @apply mb-4 text-[15px] leading-relaxed;
+  }
+  .prose-article ul,
+  .prose-article ol {
+    @apply mb-4 ml-5 list-disc space-y-1.5 text-[15px] leading-relaxed;
+  }
+  .prose-article ol {
+    @apply list-decimal;
+  }
+  .prose-article a {
+    @apply text-gold-600 underline decoration-gold-300 underline-offset-2 hover:text-gold-700 dark:text-gold-400 dark:hover:text-gold-300;
+  }
+  .prose-article blockquote {
+    @apply border-l-4 border-gold-300 pl-4 italic text-ink-500 dark:text-ink-400;
+  }
+  .prose-article strong {
+    @apply font-semibold text-ink-900 dark:text-ink-50;
+  }
+}
