@@ -13,7 +13,9 @@ const ADMIN_KEY_STORAGE = "rupeeuncle_admin_key";
  * model the backend already implements, just consumed correctly from the frontend.
  */
 const adminApiClient = axios.create({
-  baseURL: "/api/admin",
+  baseURL: import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/admin`
+  : "/api/admin",
   timeout: 15000,
 });
 
