@@ -67,7 +67,10 @@ app.use("/api/admin", adminLimiter);
 app.get("/robots.txt", getRobotsTxt);
 app.get("/sitemap.xml", getSitemapXml);
 
-// --- Health check (for uptime monitors / Vercel) ---
+// --- Health check (for uptime monitors) ---
+app.get("/", (req, res) => {
+  res.status(200).json({ success: true, message: "RupeeUncle API is running" });
+});
 app.get("/api/health", (req, res) => {
   res.status(200).json({ success: true, message: "RupeeUncle API is running" });
 });

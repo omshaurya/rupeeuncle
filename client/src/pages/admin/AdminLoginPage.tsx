@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, ShieldAlert } from "lucide-react";
+import { Lock, ShieldAlert, Eye, EyeOff } from "lucide-react";
 import { setAdminKey, isAdminLoggedIn } from "../../utils/adminApiClient";
 import adminApiClient from "../../utils/adminApiClient";
 import { useSeo } from "../../hooks/useSeo";
@@ -17,6 +17,7 @@ import { useSeo } from "../../hooks/useSeo";
 export default function AdminLoginPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState<"idle" | "checking" | "error">("idle");
 
   useSeo({
@@ -68,15 +69,25 @@ export default function AdminLoginPage() {
             <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-200">
               Admin Key
             </label>
-            <input
-              id="password"
-              type="password"
-              required
-              autoFocus
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2.5 text-sm text-ink-800 dark:border-surface-500 dark:bg-surface-700 dark:text-ink-50"
-            />
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                required
+                autoFocus
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-lg border border-ink-200 bg-white px-3 py-2.5 pr-10 text-sm text-ink-800 dark:border-surface-500 dark:bg-surface-700 dark:text-ink-50"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-700 dark:hover:text-ink-200"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
 
           {status === "error" && (

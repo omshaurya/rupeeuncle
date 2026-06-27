@@ -1,10 +1,13 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import connectDB from "./src/config/db.js";
 import app from "./src/app.js";
 
-// Connect to MongoDB on cold start (cached across warm invocations)
-connectDB();
+let isConnected = false;
 
-export default app;
+// Serverless handler: lazily connects to MongoDB then delegates to Express
+export default async function handler(req, res) {
+  if (!isConnected) {
+    await connectDB();
+    isConnected = true;
+  }
+  return app(req, res);
+}
