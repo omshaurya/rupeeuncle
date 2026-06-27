@@ -1,0 +1,17 @@
+{
+  "name": "RupeeUncle",
+  "short_name": "RupeeUncle",
+  "description": "India's Largest Financial Calculators & Investment Tools Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F2027",
+  "theme_color": "#0F2027",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

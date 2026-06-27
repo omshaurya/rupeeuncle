@@ -6,11 +6,11 @@ import mongoose from "mongoose";
  */
 const connectDB = async () => {
   try {
-    const uri = process.env.MONGODB_URI;
+    const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
 
     if (!uri) {
       throw new Error(
-        "MONGODB_URI is not defined. Please set it in your .env file."
+        "MONGO_URI is not defined. Please set it in your Vercel environment variables."
       );
     }
 
@@ -35,7 +35,7 @@ const connectDB = async () => {
     return conn;
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
-    process.exit(1);
+    throw error;
   }
 };
 
