@@ -83,13 +83,13 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-1.5">
-            <Link
-              to="/calculators"
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Search calculators"
               className="rounded-lg p-2 text-ink-500 hover:bg-ink-100 dark:text-ink-300 dark:hover:bg-surface-700 md:hidden"
             >
               <Search size={18} />
-            </Link>
+            </button>
             <button
               onClick={toggleTheme}
               aria-label="Toggle dark mode"

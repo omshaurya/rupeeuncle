@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { useEffect } from "react";
+import IntelligentSearchBar from "../search/IntelligentSearchBar";
 
 interface NavLink {
   label: string;
@@ -35,7 +36,7 @@ export default function MobileMenu({ isOpen, onClose, categoryLinks, primaryLink
         className="absolute inset-0 bg-ink-950/50 backdrop-blur-sm animate-fade-in"
       />
       <nav className="glass-strong absolute right-0 top-0 h-full w-[85%] max-w-sm animate-slide-up overflow-y-auto p-6">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between">
           <span className="font-display text-lg font-semibold text-ink-900 dark:text-ink-50">
             Menu
           </span>
@@ -46,6 +47,10 @@ export default function MobileMenu({ isOpen, onClose, categoryLinks, primaryLink
           >
             <X size={20} />
           </button>
+        </div>
+
+        <div className="mb-5">
+          <IntelligentSearchBar size="md" placeholder="Search calculators, articles..." />
         </div>
 
         <div className="space-y-1">
